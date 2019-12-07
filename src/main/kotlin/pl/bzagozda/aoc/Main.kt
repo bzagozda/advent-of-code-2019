@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
 import com.github.ajalt.clikt.parameters.types.int
 import pl.bzagozda.aoc.day1.Day1
+import pl.bzagozda.aoc.day2.Day2
 import pl.bzagozda.aoc.util.measureExecutionTimeMillis
 
 class CLI : CliktCommand() {
@@ -14,6 +15,7 @@ class CLI : CliktCommand() {
     override fun run() = measureExecutionTimeMillis {
         when(day) {
             1 -> Day1.run(part)
+            2 -> Day2.run(part)
             else -> Unit
         }
     }.let { print("Measured milliseconds: $it") }

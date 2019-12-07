@@ -1,6 +1,6 @@
 package pl.bzagozda.aoc.day1
 
-import pl.bzagozda.aoc.util.getResource
+import pl.bzagozda.aoc.util.getResourceFile
 
 object Day1 {
     fun run(part: Int) = when(part) {
@@ -37,7 +37,7 @@ object Day1 {
 
     private fun procesInput(block: (List<Int>) -> Any) =
         "/day1/input.txt"
-            .getResource()
+            .getResourceFile()
             .readLines()
             .map { it.toInt() }
             .let(block)
