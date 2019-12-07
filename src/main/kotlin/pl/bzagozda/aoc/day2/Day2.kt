@@ -2,33 +2,61 @@ package pl.bzagozda.aoc.day2
 
 import pl.bzagozda.aoc.util.getResourceFile
 
+
+typealias IsProgramFinished = Boolean
+
 object Day2 {
-    fun run(part: Int) = when(part) {
+    fun run(part: Int): Unit = when(part) {
         1 -> part1()
         2 -> part2()
-        else -> -1
+        else -> Unit
     }
 
-    private fun part1() = inputToIntcodeProgram()
-        .apply { this[1] = 12 }
-        .apply { this[2] = 2 }
-        .let { runIntcodeProgram(it) }
-        .also { println("Result: ${it[0]}") }
+    private fun part1() {
+        inputToIntcodeProgram()
+            .apply { this[1] = 12 }
+            .apply { this[2] = 2 }
+            .let { runIntcodeProgram(it) }
+            .also { println("Result: ${it[0]}") }
+    }
 
-    private fun part2(): Int = -1
+    private fun part2() {
+        val intCodeComputer = IntCodeComputer(inputToIntcodeProgram())
+
+        for(noun in 0..99) {
+            for(verb in 0..99) {
+                val result = intCodeComputer.apply {
+                    reset()
+                    setNoun(noun)
+                    setVerb(verb)
+                    run()
+                }.getResult()
+
+                if(result == 19690720) {
+                    println(100 * noun + verb)
+                    return
+                }
+            }
+        }
+    }
 
     private fun runIntcodeProgram(intcode: IntArray): IntArray {
-        loop@for((index, i) in intcode.withIndex()) {
+        for((index, i) in intcode.withIndex()) {
             if(index % 4 != 0) {
                 continue
             }
-            when(i) {
-                1 -> processSumIntcode(index, intcode)
-                2 -> processMulIntcode(index, intcode)
-                99 -> break@loop
-            }
+            if (handleOpcode(i, index, intcode)) break
         }
         return intcode
+    }
+
+    private fun handleOpcode(opcode: Int, index: Int, intcode: IntArray): IsProgramFinished {
+        when (opcode) {
+            1 -> processSumIntcode(index, intcode)
+            2 -> processMulIntcode(index, intcode)
+            99 -> return true
+        }
+        return false
     }
 
     private fun processSumIntcode(startingIndex: Int, intcode: IntArray) {
