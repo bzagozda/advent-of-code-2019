@@ -9,10 +9,11 @@ import pl.bzagozda.aoc.util.measureExecutionTimeMillis
 
 class CLI : CliktCommand() {
     private val day: Int by option(help = "AOC 2019 Day").int().prompt("Day of AOC-2019")
+    private val part: Int by option(help = "Part of a task").int().prompt("Part of a task")
 
     override fun run() = measureExecutionTimeMillis {
         when(day) {
-            1 -> Day1.run()
+            1 -> Day1.run(part)
             else -> Unit
         }
     }.let { print("Measured milliseconds: $it") }
